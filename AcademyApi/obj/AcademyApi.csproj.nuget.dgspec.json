@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\Área de Trabalho\\-\\Academy\\AcademyApi\\AcademyApi.csproj": {}
+    "D:\\Área de Trabalho\\-\\Academy\\academyapi\\AcademyApi.csproj": {}
   },
   "projects": {
-    "D:\\Área de Trabalho\\-\\Academy\\AcademyApi\\AcademyApi.csproj": {
+    "D:\\Área de Trabalho\\-\\Academy\\academyapi\\AcademyApi.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Área de Trabalho\\-\\Academy\\AcademyApi\\AcademyApi.csproj",
+        "projectUniqueName": "D:\\Área de Trabalho\\-\\Academy\\academyapi\\AcademyApi.csproj",
         "projectName": "AcademyApi",
-        "projectPath": "D:\\Área de Trabalho\\-\\Academy\\AcademyApi\\AcademyApi.csproj",
+        "projectPath": "D:\\Área de Trabalho\\-\\Academy\\academyapi\\AcademyApi.csproj",
         "packagesPath": "C:\\Users\\ddoug\\.nuget\\packages\\",
-        "outputPath": "D:\\Área de Trabalho\\-\\Academy\\AcademyApi\\obj\\",
+        "outputPath": "D:\\Área de Trabalho\\-\\Academy\\academyapi\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\ddoug\\AppData\\Roaming\\NuGet\\NuGet.Config"
@@ -47,10 +47,6 @@
             "Azure.Identity": {
               "target": "Package",
               "version": "[1.13.1, )"
-            },
-            "Microsoft.AspNetCore.Authentication.JwtBearer": {
-              "target": "Package",
-              "version": "[9.0.0, )"
             },
             "Microsoft.AspNetCore.Cors": {
               "target": "Package",

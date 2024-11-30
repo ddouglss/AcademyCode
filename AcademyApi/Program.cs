@@ -1,84 +1,53 @@
 using AcademyApi.Models;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.IdentityModel.Tokens;
-using System.Text;
-using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Configuração de serviços
-builder.Services.AddControllers(); 
+// Adicione os serviços antes de chamar builder.Build()
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen(); 
+builder.Services.AddSwaggerGen(); // Adiciona suporte ao Swagger
+builder.Services.AddControllers(); // Adiciona suporte para controladores
 
-// Configuração do DbContext
-builder.Services.AddDbContext<Contexto>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("ConexaoBD")));
-
-// Configuração do CORS
+// Configuração do CORS antes de chamar builder.Build()
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowAll", builder => 
-        builder.AllowAnyOrigin() 
-               .AllowAnyMethod()  
-               .AllowAnyHeader()); 
+    // Defina a política de CORS com nome
+    options.AddPolicy("AllowAnyOriginPolicy", policy =>
+    {
+        policy.AllowAnyOrigin()   // Permite todas as origens
+              .AllowAnyMethod()   // Permite todos os métodos HTTP (GET, POST, etc.)
+              .AllowAnyHeader();  // Permite todos os cabeçalhos
+    });
 });
 
-// Configuração de autenticação JWT
-builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-    .AddJwtBearer(options =>
-    {
-        options.RequireHttpsMetadata = false; 
-        options.SaveToken = true;
-        
-        var secretKey = builder.Configuration["JwtSettings:SecretKey"];
-        if (string.IsNullOrEmpty(secretKey))
-        {
-            throw new ArgumentException("A chave secreta JWT não foi configurada.");
-        }
+// Configure o banco de dados
+builder.Services.AddDbContext<Contexto>(opcoes =>
+{
+    opcoes.UseSqlServer(builder.Configuration.GetConnectionString("ConexaoBD"));
+});
 
-        options.TokenValidationParameters = new TokenValidationParameters
-        {
-            ValidateIssuer = true,
-            ValidateAudience = true,
-            ValidateLifetime = true,
-            ValidateIssuerSigningKey = true,
-            ValidIssuer = builder.Configuration["JwtSettings:Issuer"],
-            ValidAudience = builder.Configuration["JwtSettings:Audience"],
-            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey))
-        };
-    });
-
-    builder.Services.AddControllers()
-    .ConfigureApiBehaviorOptions(options =>
-    {
-        options.InvalidModelStateResponseFactory = context =>
-        {
-            var errors = context.ModelState.Values
-                .SelectMany(x => x.Errors)
-                .Select(x => x.ErrorMessage)
-                .ToArray();
-
-            return new BadRequestObjectResult(new { message = "Erro de validação", errors });
-        };
-    });
-
+// Criação do aplicativo
 var app = builder.Build();
 
-// Configuração do pipeline de middleware
+// Configure o pipeline de requisição HTTP
 if (app.Environment.IsDevelopment())
 {
-    app.UseSwagger();         
-    app.UseSwaggerUI();       
+    app.UseSwagger();         // Ativa o endpoint do Swagger JSON
+    app.UseSwaggerUI();       // Ativa a interface do Swagger UI
 }
 
-app.UseCors("AllowAll");  // CORS
+// Adicione o middleware necessário
+app.UseHttpsRedirection(); // Middleware para redirecionar HTTP para HTTPS
+app.UseRouting(); // Configuração do roteamento
+app.UseAuthorization(); // Middleware de autorização, se aplicável
 
-app.UseHttpsRedirection(); 
-app.UseAuthentication();  
-app.UseAuthorization();   
+// Usando a política nomeada para CORS
+app.UseCors("AllowAnyOriginPolicy");
 
-app.MapControllers(); 
+// Mapeie os controladores
+app.MapControllers();
 
+// Chama app.Run() uma única vez ao final
 app.Run();
+

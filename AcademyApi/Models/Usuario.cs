@@ -16,7 +16,7 @@ namespace AcademyApi.Models
         public required string Email { get; set; }
         public required string Cidade { get; set; }
         public required string Senha { get; set; }
-        public required string AreaCurso { get; set; } // Front-end, Back-end, etc.
+        public required string AreaCurso { get; set; } 
         
     }
 }
