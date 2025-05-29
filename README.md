@@ -6,11 +6,14 @@
 </head>
 <body>
   <h1>AcademyCode</h1>
-  <p>
+ <p>
     Bem-vindo ao <strong>AcademyCode</strong>! Este é um projeto de uma plataforma de cursos online
     desenvolvida para programadores. Ele foi projetado com o objetivo de fornecer uma experiência
     interativa e intuitiva para usuários que desejam aprimorar suas habilidades em tecnologia.
   </p>
+ 
+
+## <p>Repositório do Front-end </p> https://github.com/ddouglss/vue-code
 
   <h2>Visão Geral do Projeto</h2>
   <p>
